@@ -33,7 +33,7 @@ for title in user_movies:
 
 #2
 user_movies = []
-user_input = ['']
+user_input = []
 
 def print_movie_info(user_movies, parameter):
     if(parameter != 'none'):
@@ -44,28 +44,21 @@ def print_movie_info(user_movies, parameter):
             print(f'{key}: {value}')
         print('')
 
-def get_parameter(user_input : str):
-    for element in user_input:
-        if element.find(':') >= 0:
-            rating = element[element.find(':')+1:]
-            element = element[:element.find(':')-1]
-            return rating
-    return 'none'
-
 while(True):
-    user_input = input('Type movie title or titles: ').split(', ')
+    user_input = input('Type movie title or titles: ')
 
-    if(user_input[-1] == 'end'):
+    if user_input == 'end':
         break
+        
+    user_input = user_input.split(':')
+    movie_titles = user_input[0].split(', ')
 
-    parameter = get_parameter(user_input)
+    if len(user_input) > 1:
+        parameter = user_input[1]
+    else:
+        parameter = 'none'
 
-    if(parameter != 'none'):
-        xd = user_input.pop()
-        xd = xd[:xd.find(':')-1]
-        user_input.append(xd)
-
-    for title in user_input:
+    for title in movie_titles:
         res = omdb.request(t=title, r = 'json')
         data = json.loads(res.content)
         runtime = int(data['Runtime'][:-3])
