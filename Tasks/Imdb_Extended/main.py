@@ -1,8 +1,8 @@
-import os
 import omdb
 import json
-import datetime
-os.system('cls')
+from datetime import datetime
+import os
+import urllib
 
 omdb.set_default('apikey', '84f49445')
 
@@ -22,20 +22,24 @@ def print_movie_info(user_movies, parameter):
 
 def load_movies_from_file(path : str):
     movie_titles = []
-    word_list = []
+    word_list = open('C:\words.txt', 'rt').read().replace('\n', '').split(', ')
 
-    with open('C:\words.txt', 'rt') as file:
-        for line in file:
-            for string in line.strip().split(', '):
-                word_list.append(string)
-    file.close()
-
-    for file in os.listdir(path):
+    for file in [f for f in os.listdir(path) if os.path.isfile(f)]:
         movie_titles.append(os.path.splitext(file)[0])
         for word in word_list:
             movie_titles[-1] = movie_titles[-1].replace(word, '')
 
     return movie_titles
+
+def put_movies_in_folder(user_movies : list):
+    for movie in user_movies:
+        os.mkdir(f'C:\Movies\{movie["Title"]}')
+        file = open(f'C:\Movies\{movie["Title"]}\info.txt', 'a')
+        urllib.request.urlretrieve(movie['Poster'], f'C:\Movies\{movie["Title"]}\{movie["Title"]}.jpg')
+        for key, value in movie.items():
+            file.writelines(f'{key}: {value}\n')
+
+    file.close()
 
 while(True):
     user_input = input('Wanna type movie titles or load them from file?: ')
@@ -66,10 +70,11 @@ while(True):
             user_input.remove(title)
             print(f'Movie {title} doesn\'t exist!')
         else:
-            release_date = datetime.datetime.strptime(data['Released'], '%d %b %Y').date()
+            release_date = datetime.strptime(data['Released'], '%d %b %Y').date()
             popularity = int(data['imdbVotes'].replace(',',''))
             user_movies.append({'Title': data['Title'], 'Released': release_date , 'Rating': int(data['Metascore']), 
-                              'Runtime': runtime, 'Popularity': popularity })
+                              'Runtime': runtime, 'Popularity': popularity, 'Poster': data['Poster'] })
     
 print()
+put_movies_in_folder(user_movies)
 print_movie_info(user_movies, parameter)
