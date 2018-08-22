@@ -28,15 +28,12 @@ def load_movies_from_file(path : str):
         for line in file:
             for string in line.strip().split(', '):
                 word_list.append(string)
-    
     file.close()
 
     for file in os.listdir(path):
         movie_titles.append(os.path.splitext(file)[0])
-
-    for i in range(len(movie_titles)):
         for word in word_list:
-            movie_titles[i] = movie_titles[i].replace(word, '')
+            movie_titles[-1] = movie_titles[-1].replace(word, '')
 
     return movie_titles
 
