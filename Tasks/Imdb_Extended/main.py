@@ -24,7 +24,8 @@ def load_movies_from_file(path : str):
     movie_titles = []
     word_list = open('C:\words.txt', 'rt').read().replace('\n', '').split(', ')
 
-    for file in [f for f in os.listdir(path) if os.path.isfile(f)]:
+    #TODO: loop should take only files
+    for file in os.listdir(path):
         movie_titles.append(os.path.splitext(file)[0])
         for word in word_list:
             movie_titles[-1] = movie_titles[-1].replace(word, '')
@@ -39,10 +40,8 @@ def put_movies_in_folder(user_movies : list):
         for key, value in movie.items():
             file.writelines(f'{key}: {value}\n')
 
-    file.close()
-
 while(True):
-    user_input = input('Wanna type movie titles or load them from file?: ')
+    user_input = input('Wanna type movie titles or load them from file?[load/type/end]:  ')
 
     if user_input == 'type':
         user_input = input('Type movie title or titles: ')
@@ -70,9 +69,11 @@ while(True):
             user_input.remove(title)
             print(f'Movie {title} doesn\'t exist!')
         else:
+            #TODO: fix problem with N/A
             release_date = datetime.strptime(data['Released'], '%d %b %Y').date()
             popularity = int(data['imdbVotes'].replace(',',''))
-            user_movies.append({'Title': data['Title'], 'Released': release_date , 'Rating': int(data['Metascore']), 
+            rating = data['Metascore']
+            user_movies.append({'Title': data['Title'], 'Released': release_date , 'Rating': rating, 
                               'Runtime': runtime, 'Popularity': popularity, 'Poster': data['Poster'] })
     
 print()
