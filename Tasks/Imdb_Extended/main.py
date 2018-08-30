@@ -24,8 +24,7 @@ def load_movies_from_file(path : str):
     movie_titles = []
     word_list = open('C:\words.txt', 'rt').read().replace('\n', '').split(', ')
 
-    #TODO: loop should take only files
-    for file in os.listdir(path):
+    for file in [f for f in os.listdir(path) if os.path.isfile(f'C:/Movies/{f}')]:
         movie_titles.append(os.path.splitext(file)[0])
         for word in word_list:
             movie_titles[-1] = movie_titles[-1].replace(word, '')
