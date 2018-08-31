@@ -63,7 +63,7 @@ while(True):
     for title in movie_titles:
         res = omdb.request(t=title, r = 'json')
         data = json.loads(res.content)
-        if data['Response'] == False:
+        if data['Response'] == 'False':
             user_input.remove(title)
             print(f'Movie {title} doesn\'t exist!')
         else:
