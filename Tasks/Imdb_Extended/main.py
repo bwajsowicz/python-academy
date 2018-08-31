@@ -33,11 +33,14 @@ def load_movies_from_file(path : str):
 
 def put_movies_in_folder(user_movies : list):
     for movie in user_movies:
-        os.mkdir(f'C:\Movies\{movie["Title"]}')
-        file = open(f'C:\Movies\{movie["Title"]}\info.txt', 'a')
-        urllib.request.urlretrieve(movie['Poster'], f'C:\Movies\{movie["Title"]}\{movie["Title"]}.jpg')
-        for key, value in movie.items():
-            file.writelines(f'{key}: {value}\n')
+        if not os.path.exists(f'C:\Movies\{movie["Title"]}'):
+            os.mkdir(f'C:\Movies\{movie["Title"]}')
+            file = open(f'C:\Movies\{movie["Title"]}\info.txt', 'a')
+            urllib.request.urlretrieve(movie['Poster'], f'C:\Movies\{movie["Title"]}\{movie["Title"]}.jpg')
+            for key, value in movie.items():
+                file.writelines(f'{key}: {value}\n')
+        else:
+            print('FOLDER EXIST!"')
 
 while(True):
     user_input = input('Wanna type movie titles or load them from file?[load/type/end]:  ')
