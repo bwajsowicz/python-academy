@@ -63,12 +63,12 @@ while(True):
     for title in movie_titles:
         res = omdb.request(t=title, r = 'json')
         data = json.loads(res.content)
-        runtime = int(data['Runtime'][:-3])
         if data['Response'] == False:
             user_input.remove(title)
             print(f'Movie {title} doesn\'t exist!')
         else:
             #TODO: fix problem with N/A
+            runtime = int(data['Runtime'][:-3])
             release_date = datetime.strptime(data['Released'], '%d %b %Y').date()
             popularity = int(data['imdbVotes'].replace(',',''))
             rating = data['Metascore']
