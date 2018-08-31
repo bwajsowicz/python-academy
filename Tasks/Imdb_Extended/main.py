@@ -77,4 +77,4 @@ while(True):
     
 print()
 put_movies_in_folder(user_movies)
-print_movie_info(user_movies, parameter)
+print_movie_info(user_movies, parameter.strip())
