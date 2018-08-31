@@ -74,7 +74,12 @@ while(True):
             runtime = int(data['Runtime'][:-3])
             release_date = datetime.strptime(data['Released'], '%d %b %Y').date()
             popularity = int(data['imdbVotes'].replace(',',''))
-            rating = data['Metascore']
+
+            if data['Metascore'] == 'N/A':
+                rating = 0
+            else:
+                rating = int(data['Metascore'])
+                
             user_movies.append({'Title': data['Title'], 'Released': release_date , 'Rating': rating, 
                               'Runtime': runtime, 'Popularity': popularity, 'Poster': data['Poster'] })
     
